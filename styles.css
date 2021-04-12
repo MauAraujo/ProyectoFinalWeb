@@ -1,11 +1,38 @@
+:root {
+  --blue: #4385e8;
+}
+
 main {
   height: 100vh;
 }
+
+.scrollable {
+  overflow: auto;
+}
+
+.scrollable.max-h {
+  max-height: 25rem;
+}
+
+.border-less {
+  border: none;
+}
+
+/* Card */
 
 .card {
   border-radius: 15px;
 }
 
-.scrollable {
-  overflow: auto;
+.storie-id {
+  font-size: clamp(2rem, 3rem, 4rem);
+}
+
+.hovereable {
+  cursor: pointer;
+  transition: background-color 200ms ease-in-out;
+}
+.hovereable:hover {
+  background-color: var(--blue, blue);
+  color: white;
 }

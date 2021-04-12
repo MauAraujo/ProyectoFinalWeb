@@ -11,6 +11,10 @@
       integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+    />
     <link rel="stylesheet" href="styles.css" />
     <title>Planeación Ágil</title>
   </head>
@@ -33,13 +37,13 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="container me-0">
               <div class="row justify-content-end">
-                <div class="col-1 nav-item">
+                <div class="col-2 nav-item text-center">
                   <a class="nav-link active" href="#">Proyectos</a>
                 </div>
-                <div class="col-2 nav-item">
+                <div class="col-2 nav-item text-center">
                   <a class="nav-link" href="#">Mi Organización</a>
                 </div>
-                <div class="col-1 nav-item dropdown">
+                <div class="col-2 nav-item text-center dropdown">
                   <a
                     class="nav-link dropdown-toggle"
                     href="#"
@@ -50,7 +54,7 @@
                   >
                     <!-- TODO: Imagen de perfil -->
                     <!-- <img class="nav-link" alt="perfil" /> -->
-                    Perfil
+                    Tim Cook
                   </a>
                   <ul
                     class="dropdown-menu"
@@ -58,16 +62,9 @@
                   >
                     <li><a class="dropdown-item" href="#">Action</a></li>
                     <li>
-                      <a class="dropdown-item" href="#">Another action</a>
-                    </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                      <a class="dropdown-item" href="#">Something else here</a>
+                      <a class="dropdown-item" href="#">Action 2</a>
                     </li>
                   </ul>
-                </div>
-                <div class="col-2 nav-item">
-                  <a class="nav-link" href="#">Tim Cook</a>
                 </div>
               </div>
             </div>
@@ -89,7 +86,7 @@
         </header>
         <div class="px-1 m-5">
           <div class="row justify-content-center" id="projects-row">
-            <div class="col-3 me-4">
+            <div class="col-3 me-4 my-2">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Proyecto 1</h4>
@@ -104,25 +101,48 @@
                   class="list-group list-group-horizontal list-group-flush scrollable"
                 >
                   <li class="list-group-item">
-                    <img src="" alt="persona x" />
+                    <p
+                      class="d-flex flex-column align-items-center justify-content-center my-1"
+                    >
+                      <i class="bi bi-person d-block fs-2 text-primary"></i>
+                      <span class="text-center m-0">Colaborador</span>
+                    </p>
                   </li>
+
                   <li class="list-group-item">
-                    <img src="" alt="persona x" />
+                    <p
+                      class="d-flex flex-column align-items-center justify-content-center my-1"
+                    >
+                      <i class="bi bi-person d-block fs-2 text-primary"></i>
+                      <span class="text-center m-0">Colaborador</span>
+                    </p>
                   </li>
+
                   <li class="list-group-item">
-                    <img src="" alt="persona x" />
+                    <p
+                      class="d-flex flex-column align-items-center justify-content-center my-1"
+                    >
+                      <i class="bi bi-person d-block fs-2 text-primary"></i>
+                      <span class="text-center m-0">Colaborador</span>
+                    </p>
                   </li>
+
                   <li class="list-group-item">
-                    <img src="" alt="persona x" />
+                    <p
+                      class="d-flex flex-column align-items-center justify-content-center my-1"
+                    >
+                      <i class="bi bi-person d-block fs-2 text-primary"></i>
+                      <span class="text-center m-0">Colaborador</span>
+                    </p>
                   </li>
+
                   <li class="list-group-item">
-                    <img src="" alt="persona x" />
-                  </li>
-                  <li class="list-group-item">
-                    <img src="" alt="persona x" />
-                  </li>
-                  <li class="list-group-item">
-                    <img src="" alt="persona x" />
+                    <p
+                      class="d-flex flex-column align-items-center justify-content-center my-1"
+                    >
+                      <i class="bi bi-person d-block fs-2 text-primary"></i>
+                      <span class="text-center m-0">Colaborador</span>
+                    </p>
                   </li>
                 </ul>
                 <div class="card-body d-flex justify-content-between">
@@ -130,15 +150,97 @@
                     Eliminar
                   </button>
 
-                  <button type="button" class="btn btn-outline-primary">
-                    Abrir
+                  <button
+                    type="button"
+                    class="btn btn-outline-warning"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    Editar
                   </button>
+                  <!-- TODO:Provicional, cambiar en jsp -->
+                  <a
+                    href="proyecto.html"
+                    type="button"
+                    class="btn btn-outline-primary"
+                  >
+                    Abrir
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <form class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Proyecto</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!-- <form> -->
+              <div class="mb-3">
+                <label for="name" class="form-label">Nombre de proyecto</label>
+                <input type="text" class="form-control" id="name" name="name" />
+              </div>
+              <div class="mb-3">
+                <label for="descirption" class="form-label"
+                  >Descripción del Proyecto</label
+                >
+                <textarea
+                  class="form-control"
+                  id="descirption"
+                  name="description"
+                  rows="3"
+                ></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Colaboradores</label>
+                <ul
+                  id="collabs"
+                  class="list-group list-group-horizontal list-group-flush scrollable my-2"
+                ></ul>
+                <!-- <div id="collabs" class="d-flex scrollable">
+                  <i
+                    class="bi bi-person d-block mb-2 me-3 fs-2 text-primary"
+                  ></i>
+                </div> -->
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="addCollab()"
+                >
+                  <i class="bi bi-plus-circle mx-2"></i>Agregar Colaborador
+                </button>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </main>
     <!-- TODO:Footer -->
     <!-- <footer>
@@ -149,6 +251,7 @@
       integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
       crossorigin="anonymous"
     ></script>
+
     <script src="proyectos.js"></script>
   </body>
 </html>

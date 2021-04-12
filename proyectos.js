@@ -30,9 +30,25 @@ function createProject() {
     const li = document.createElement("li");
     li.classList.add("list-group-item");
 
-    const avatar = document.createElement("img");
-    avatar.src = "#";
-    avatar.alt = `Avatar #${index + 1}`;
+    const avatar = document.createElement("p");
+    avatar.classList.add(
+      "d-flex",
+      "flex-column",
+      "align-items-center",
+      "justify-content-center",
+      "my-1"
+    );
+
+    const icon = document.createElement("i");
+    icon.classList.add("bi", "bi-person", "d-block", "fs-2", "text-primary");
+
+    const name = document.createElement("span");
+    name.classList.add("text-center", "m-0");
+    name.innerHTML = "Colaborador";
+
+    avatar.appendChild(icon);
+    avatar.appendChild(name);
+
     li.appendChild(avatar);
     collabs.appendChild(li);
   }
@@ -44,6 +60,10 @@ function createProject() {
   del.classList.add("btn", "btn-outline-danger");
   del.type = "button";
   del.innerHTML = "Eliminar";
+  const edit = document.createElement("button");
+  edit.classList.add("btn", "btn-outline-warning");
+  edit.type = "button";
+  edit.innerHTML = "Editar";
   const open = document.createElement("button");
   open.classList.add("btn", "btn-outline-primary");
   open.type = "button";
@@ -53,6 +73,7 @@ function createProject() {
   body1.appendChild(description);
 
   body2.appendChild(del);
+  body2.appendChild(edit);
   body2.appendChild(open);
 
   card.appendChild(body1);
@@ -62,4 +83,32 @@ function createProject() {
   col.appendChild(card);
 
   row.appendChild(col);
+}
+
+function addCollab() {
+  const collabs = document.getElementById("collabs");
+
+  const li = document.createElement("li");
+  li.classList.add("list-group-item", "border-less");
+
+  const avatar = document.createElement("p");
+  avatar.classList.add(
+    "d-flex",
+    "flex-column",
+    "align-items-center",
+    "justify-content-center"
+  );
+
+  const icon = document.createElement("i");
+  icon.classList.add("bi", "bi-person", "d-block", "fs-2", "text-primary");
+
+  const name = document.createElement("span");
+  name.classList.add("text-center", "m-0");
+  name.innerHTML = "Colaborador";
+
+  avatar.appendChild(icon);
+  avatar.appendChild(name);
+
+  li.appendChild(avatar);
+  collabs.appendChild(li);
 }
