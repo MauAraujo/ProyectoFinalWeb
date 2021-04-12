@@ -1,0 +1,11 @@
+main {
+  height: 100vh;
+}
+
+.card {
+  border-radius: 15px;
+}
+
+.scrollable {
+  overflow: auto;
+}
