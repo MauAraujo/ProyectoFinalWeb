@@ -3,13 +3,16 @@ package projects;
 import java.sql.*;
 import java.util.ArrayList;
 import projects.Project;
+import projects.Collaborator;
+import projects.ReadCDriver;
 
-public class ReadDriver {
+public class ReadPDriver {
     private ArrayList<Project> allProjects = new ArrayList<Project>();
 
-    ReadDriver() {
-      String name, description, date;
+    ReadPDriver() {
+      String name, description, date, collabname;
       int id;
+      ArrayList<Collaborator> collabs;
 
       try {
           Class.forName("com.mysql.jdbc.Driver");
@@ -22,8 +25,9 @@ public class ReadDriver {
               name = projects.getString("name");
               description = projects.getString("description");
               date = projects.getString("date");
-
-              Project current = new Project(id, name, description, date);
+              ReadCDriver cdriver = new ReadCDriver(Integer.toString(id));
+              collabs = cdriver.getCollaborators();
+              Project current = new Project(id, name, description, date, collabs);
               allProjects.add(current);
           }
 
