@@ -8,7 +8,7 @@ public class ReadCDriver {
     private ArrayList<Collaborator> allCollaborators = new ArrayList<Collaborator>();
     private String projectID;
 
-    ReadCDriver(String projectID) {
+    ReadCDriver(int projectID) {
       String name, projects;
       int uid, id;
 
@@ -17,21 +17,23 @@ public class ReadCDriver {
           Connection db = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
           Statement sql = db.createStatement();
           ResultSet collabs = sql.executeQuery("SELECT * FROM `collaborator-projects` WHERE projectid = " + projectID);
-
-          uid = collabs.getInt("userid");
-          collabs = sql.executeQuery("SELECT * FROM collaborators WHERE userid = " + uid);
           while (collabs.next()) {
-              id = collabs.getInt("userid");
-              name = collabs.getString("name");
-              projects = collabs.getString("projects");
+              uid = collabs.getInt("userid");
+              collabs = sql.executeQuery("SELECT * FROM collaborators WHERE userid = " + uid);
 
-              Collaborator current = new Collaborator(id, name, projects);
-              allCollaborators.add(current);
+              while (collabs.next()) {
+                  id = collabs.getInt("userid");
+                  name = collabs.getString("name");
+
+                  Collaborator current = new Collaborator(id, name);
+                  allCollaborators.add(current);
+              }
           }
 
           collabs.close();
           db.close();
           sql.close();
+
       }
       catch (ClassNotFoundException e) {
           System.out.println("Not found");

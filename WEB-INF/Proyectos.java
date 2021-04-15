@@ -12,12 +12,18 @@ import com.google.gson.Gson;
 public class Proyectos extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
-      String json = GetProjects();
-      PrintWriter out = response.getWriter();
-      response.setContentType("application/json");
-      response.setCharacterEncoding("UTF-8");
-      out.print(json);
-      out.flush();
+        String json;
+        String projectID = request.getParameter("id");
+        if (projectID != null) {
+            json = GetProject(Integer.parseInt(projectID));
+        } else {
+            json = GetProjects();
+        }
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.print(json);
+        out.flush();
     }
 
     public String GetProjects() {
@@ -26,7 +32,10 @@ public class Proyectos extends HttpServlet {
         return new Gson().toJson(allProjects);
     }
 
-    public void GetProject(String projectID) {
+    public String GetProject(int projectID) {
+        ReadPDriver pdriver = new ReadPDriver(projectID);
+        Project project = pdriver.getProject();
+        return new Gson().toJson(project);
     }
 
     public void CreateProject(Project newProject) {
@@ -38,6 +47,5 @@ public class Proyectos extends HttpServlet {
     }
 
     public void DeleteProject(String projectID) {
-        
     }
 }
