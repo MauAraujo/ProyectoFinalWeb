@@ -1,11 +1,15 @@
 package projects;
 
 public class Collaborator {
-    private int projectID;
-    private String name;
+    int uid;
+    String name;
 
-    public Collaborator(int projectID, String name) {
-        this.projectID = projectID;
+    public Collaborator(int uid, String name) {
+        this.uid = uid;
         this.name = name;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }

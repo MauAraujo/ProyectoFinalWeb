@@ -276,17 +276,13 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, sit et seq
          </footer> -->
     <script>
      var xhr = new XMLHttpRequest();
-     xhr.onreadystatechange = function() {
-         if (xhr.readyState == 4) {
-             var res = xhr.responseText;
-             const data = JSON.parse(res);
-             console.log(data);
-             document.getElementById('project-title').innerHTML = data[0].name;
-             document.getElementById('project-description').innerHTML = data[0].description;
-         }
-     }
-     xhr.open('GET', 'http://localhost:8080/proyecto/Proyectos', true);
-     xhr.send(null);
+     xhr.open("GET", "http://localhost:8080/proyecto/Proyectos", true);
+     xhr.onload = function () {
+         const projects = JSON.parse(this.responseText);
+         console.log(projects);
+     };
+
+     xhr.send();
 
      function getProject(id) {
          var xhr = new XMLHttpRequest();

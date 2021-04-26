@@ -4,17 +4,28 @@ import java.util.ArrayList;
 import projects.Collaborator;
 
 public class Project {
-    private int projectID;
-    private String name;
-    private String description;
-    private String date;
-    private ArrayList<Collaborator> collabs;
+    int id;
+    String name;
+    String description;
+    String date;
+    ArrayList<Collaborator> collabs;
 
-    public Project(int projectID, String name, String description, String date, ArrayList<Collaborator> collabs) {
-        this.projectID = projectID;
+    public Project(int id, String name, String description, String date) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.date = date;
+    }
+
+    public Project(int id, String name, String description, String date, ArrayList<Collaborator> collabs) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.date = date;
         this.collabs = collabs;
+    }
+
+    public void setCollabs(ArrayList < Collaborator > collabs) {
+        this.collabs = new ArrayList < Collaborator >(collabs);
     }
 }

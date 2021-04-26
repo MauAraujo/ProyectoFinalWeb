@@ -7,21 +7,17 @@ import java.util.ArrayList;
 import java.lang.StringBuffer;
 import java.io.BufferedReader;
 import com.google.gson.Gson;
-import projects.Project;
-import projects.ProjectDAO;
+import projects.Story;
+import projects.StoryDAO;
 
-public class Proyectos extends HttpServlet {
+public class Historias extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
 
         String option, json;
-        option = request.getParameter("id");
+        option = request.getParameter(type);
 
-        if (option == null) {
-            json = getProjects();
-        } else {
-            json = getProject(Integer.parseInt(option));
-        }
+        json = getStories();
 
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
@@ -33,7 +29,7 @@ public class Proyectos extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
         String json;
-        Project project;
+        Story story;
         Gson gson = new Gson();
 
         StringBuffer jb = new StringBuffer();
@@ -47,15 +43,15 @@ public class Proyectos extends HttpServlet {
         }
 
         try {
-            project = gson.fromJson(jb.toString(), Project.class);
+            story = gson.fromJson(jb.toString(), Story.class);
         } catch (Exception e) {
             throw new IOException("Error parsing JSON request string");
         }
 
-        if (project.id > 0) {
-            json = updateProject(project);
+        if (story.id > 0) {
+            json = updateStory(story);
         } else {
-            json = createProject(project);
+            json = createStory(story);
         }
 
         PrintWriter out = response.getWriter();
@@ -70,7 +66,7 @@ public class Proyectos extends HttpServlet {
         public void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
         String json;
-        Project project;
+        Story story;
         Gson gson = new Gson();
 
         StringBuffer jb = new StringBuffer();
@@ -84,12 +80,12 @@ public class Proyectos extends HttpServlet {
         }
 
         try {
-            project = gson.fromJson(jb.toString(), Project.class);
+            story = gson.fromJson(jb.toString(), Story.class);
         } catch (Exception e) {
             throw new IOException("Error parsing JSON request string");
         }
 
-        json = deleteProject(project.id);
+        json = deleteStory(story.id);
 
         PrintWriter out = response.getWriter();
 
@@ -100,28 +96,23 @@ public class Proyectos extends HttpServlet {
 
     }
 
-    public String getProjects() {
-        ProjectDAO dao = new ProjectDAO();
-        return dao.getProjects();
+    public String getStories() {
+        StoryDAO dao = new StoryDAO();
+        return dao.getStories();
     }
 
-    public String getProject(int id) {
-        ProjectDAO dao = new ProjectDAO();
-        return dao.getProject(id);
+    public String createStory(Story story) {
+        StoryDAO dao = new StoryDAO();
+        return dao.createStory(story);
     }
 
-    public String createProject(Project project) {
-        ProjectDAO dao = new ProjectDAO();
-        return dao.createProject(project);
+    public String updateStory(Story story) {
+        StoryDAO dao = new StoryDAO();
+        return dao.updateStory(story);
     }
 
-    public String updateProject(Project project) {
-        ProjectDAO dao = new ProjectDAO();
-        return dao.updateProject(project);
-    }
-
-    public String deleteProject(int id) {
-        ProjectDAO dao = new ProjectDAO();
-        return dao.deleteProject(id);
+    public String deleteStory(int id) {
+        StoryDAO dao = new StoryDAO();
+        return dao.deleteStory(id);
     }
 }
