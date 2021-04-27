@@ -42,3 +42,7 @@ main {
   background-color: var(--blue, blue);
   color: white;
 }
+
+.width-50 {
+  max-width: 50%;
+}
