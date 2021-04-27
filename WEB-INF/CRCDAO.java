@@ -4,33 +4,29 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.*;
 import com.google.gson.Gson;
-import projects.Story;
+import projects.CRC;
 
-public class StoryDAO {
+public class CRCDAO {
   String result;
 
-  public String getStories() {
+  public String getCRCs() {
     Gson gson = new Gson();
-    String title, description, date, observations;
-    ArrayList < Story > stories = new ArrayList < Story > ();
-    int id, projectid, value, days;
+    String crClass, superclass;
+    ArrayList < CRC > crcs = new ArrayList < CRC > ();
+    int id, projectid;
 
     try {
       Class.forName("com.mysql.jdbc.Driver");
       Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
       Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-      ResultSet rs = stmt.executeQuery("SELECT * FROM `user-stories`");
+      ResultSet rs = stmt.executeQuery("SELECT * FROM `crc`");
 
       while (rs.next()) {
         id = rs.getInt("id");
         projectid = rs.getInt("projectid");
-        title = rs.getString("title");
-        description = rs.getString("description");
-        date = rs.getString("date");
-        observations = rs.getString("observations");
-        value = rs.getInt("value");
-        days = rs.getInt("days");
-        stories.add(new Story(id, projectid, title, description, date, observations, value, days));
+        crClass = rs.getString("class");
+        superclass = rs.getString("superclass");
+        crcs.add(new CRC(id, projectid, crClass, superclass));
       }
 
       rs.close();
@@ -43,31 +39,27 @@ public class StoryDAO {
       result = e.getMessage();
       e.printStackTrace();
     }
-    return gson.toJson(stories);
+    return gson.toJson(crcs);
   }
 
-  public String getStory(int id) {
+  public String getCRC(int id) {
     Gson gson = new Gson();
-    String title, description, date, observations;
-    Story story = null;
-    int projectid, value, days;
+    String crClass, superclass;
+    CRC crc = null;
+    int projectid;
 
     try {
       Class.forName("com.mysql.jdbc.Driver");
       Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
       Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-      ResultSet rs = stmt.executeQuery("SELECT * FROM `user-stories` WHERE id = " + id);
+      ResultSet rs = stmt.executeQuery("SELECT * FROM `crc` WHERE id = " + id);
 
       while (rs.next()) {
         id = rs.getInt("id");
         projectid = rs.getInt("projectid");
-        title = rs.getString("title");
-        description = rs.getString("description");
-        date = rs.getString("date");
-        observations = rs.getString("observations");
-        value = rs.getInt("value");
-        days = rs.getInt("days");
-        story = new Story(id, projectid, title, description, date, observations, value, days);
+        crClass = rs.getString("class");
+        superclass = rs.getString("superclass");
+        crc = new CRC(id, projectid, crClass, superclass);
       }
 
       rs.close();
@@ -80,27 +72,22 @@ public class StoryDAO {
       result = e.getMessage();
       e.printStackTrace();
     }
-    return gson.toJson(story);
+    return gson.toJson(crc);
   }
 
-  public String createStory(Story story) {
+  public String createCRC(CRC crc) {
     Gson gson = new Gson();
-    ArrayList < Story > stories = new ArrayList < Story > ();
 
     try {
       Class.forName("com.mysql.jdbc.Driver");
       Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
       Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-      ResultSet rs = stmt.executeQuery("SELECT * FROM `user-stories`");
+      ResultSet rs = stmt.executeQuery("SELECT * FROM `crc`");
 
       rs.moveToInsertRow();
-      rs.updateInt("projectid", story.projectid);
-      rs.updateString("title", story.title);
-      rs.updateString("description", story.description);
-      rs.updateString("date", story.date);
-      rs.updateString("observations", story.observations);
-      rs.updateInt("value", story.value);
-      rs.updateInt("days", story.days);
+      rs.updateInt("projectid", crc.projectid);
+      rs.updateString("class", crc.crClass);
+      rs.updateString("superclass", crc.superclass);
       rs.insertRow();
 
       rs.close();
@@ -113,10 +100,10 @@ public class StoryDAO {
       result = e.getMessage();
       e.printStackTrace();
     }
-    return gson.toJson(story);
+    return gson.toJson(crc);
   }
 
-  public String deleteStory(int id) {
+  public String deleteCRC(int id) {
       int response = -1;
       Gson gson = new Gson();
 
@@ -125,7 +112,7 @@ public class StoryDAO {
           Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
           Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
-          response = stmt.executeUpdate("DELETE FROM `user-stories` WHERE id = " + id);
+          response = stmt.executeUpdate("DELETE FROM `crc` WHERE id = " + id);
 
           stmt.close();
           conn.close();

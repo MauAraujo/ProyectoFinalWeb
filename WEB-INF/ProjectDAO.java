@@ -180,7 +180,6 @@ public class ProjectDAO {
       Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
       Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
       ResultSet rs = stmt.executeQuery("SELECT * FROM `projects` WHERE id = " + project.id);
-      result = gson.toJson(project);
 
       while(rs.next()) {
           rs.updateString("name", project.name);

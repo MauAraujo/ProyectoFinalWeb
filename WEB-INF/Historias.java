@@ -9,15 +9,21 @@ import java.io.BufferedReader;
 import com.google.gson.Gson;
 import projects.Story;
 import projects.StoryDAO;
+import projects.CRC;
+import projects.CRCDAO;
 
 public class Historias extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
 
-        String option, json;
-        option = request.getParameter(type);
+        String type, json;
+        type = request.getParameter("type");
 
-        json = getStories();
+        if (type.equals("story")) {
+            json = getStories();
+        } else {
+            json = getCRCs();
+        }
 
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
@@ -28,9 +34,12 @@ public class Historias extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
-        String json;
-        Story story;
+        String json, type;
+        Story story = null;
+        CRC crc = null;
         Gson gson = new Gson();
+
+        type = request.getParameter("type");
 
         StringBuffer jb = new StringBuffer();
         String line = null;
@@ -43,15 +52,20 @@ public class Historias extends HttpServlet {
         }
 
         try {
-            story = gson.fromJson(jb.toString(), Story.class);
+            if (type.equals("story")) {
+                story = gson.fromJson(jb.toString(), Story.class);
+            } else {
+                crc = gson.fromJson(jb.toString(), CRC.class);
+            }
         } catch (Exception e) {
             throw new IOException("Error parsing JSON request string");
         }
 
-        if (story.id > 0) {
-            json = updateStory(story);
-        } else {
+
+        if (type.equals("story")) {
             json = createStory(story);
+        } else {
+            json = createCRC(crc);
         }
 
         PrintWriter out = response.getWriter();
@@ -65,27 +79,17 @@ public class Historias extends HttpServlet {
 
         public void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
-        String json;
-        Story story;
+            String id, json, type;
         Gson gson = new Gson();
 
-        StringBuffer jb = new StringBuffer();
-        String line = null;
-        try {
-            BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null)
-                jb.append(line);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        type = request.getParameter("type");
+        id = request.getParameter("id");
 
-        try {
-            story = gson.fromJson(jb.toString(), Story.class);
-        } catch (Exception e) {
-            throw new IOException("Error parsing JSON request string");
+        if(type.equals("story")) {
+            json = deleteStory(Integer.parseInt(id));
+        } else {
+            json = deleteCRC(Integer.parseInt(id));
         }
-
-        json = deleteStory(story.id);
 
         PrintWriter out = response.getWriter();
 
@@ -106,13 +110,23 @@ public class Historias extends HttpServlet {
         return dao.createStory(story);
     }
 
-    public String updateStory(Story story) {
-        StoryDAO dao = new StoryDAO();
-        return dao.updateStory(story);
-    }
-
     public String deleteStory(int id) {
         StoryDAO dao = new StoryDAO();
         return dao.deleteStory(id);
+    }
+
+    public String getCRCs() {
+        CRCDAO dao = new CRCDAO();
+        return dao.getCRCs();
+    }
+
+    public String createCRC(CRC crc) {
+        CRCDAO dao = new CRCDAO();
+        return dao.createCRC(crc);
+    }
+
+    public String deleteCRC(int id) {
+        CRCDAO dao = new CRCDAO();
+        return dao.deleteCRC(id);
     }
 }
