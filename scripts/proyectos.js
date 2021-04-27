@@ -27,7 +27,17 @@ function createProject() {
 }
 
 function saveProject(formData) {
-  // TODO: Guardar proyecto en bd
+    // TODO: Guardar proyecto en bd
+    formData.date = Date();
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", `http://localhost:8080/proyecto/Proyectos`, true);
+    xhr.onload = function () {
+        project = JSON.parse(this.responseText);
+        console.log(project);
+    };
+
+    xhr.send(JSON.stringify(formData));
 
   let id;
 
@@ -258,7 +268,15 @@ function paintEditCollabs(collab) {
 }
 
 function getCollabs() {
-  // TODO: Servicio para obtener los colaboradores
+    // TODO: Servicio para obtener los colaboradores
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", `http://localhost:8080/proyecto/Proyectos?collabs=true`, true);
+    xhr.onload = function () {
+        collabs = JSON.parse(this.responseText);
+        console.log(collabs);
+    };
+
+    xhr.send();
   setCollabs();
 }
 
@@ -312,39 +330,45 @@ function getProjects() {
 }
 
 function deleteProject(id) {
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState == 4) {
-      var res = xhr.responseText;
-      const data = JSON.parse(res);
-      console.log(data);
-    }
-  };
-  xhr.open("DELETE", `http://localhost:8080/proyecto/Proyectos`, true);
-  xhr.send(null);
+    var xhr = new XMLHttpRequest();
+    xhr.open("DELETE", `http://localhost:8080/proyecto/Proyectos?id=${id}`, true);
+    xhr.onload = function () {
+        response = JSON.parse(this.responseText);
+        console.log(response);
+    };
+
+    xhr.send();
 }
 
 function selectProject(id) {
   cleanProject();
   setCollabs();
 
-  // TODO: Elegir el projecto dependiendo el indice
+    // TODO: Elegir el projecto dependiendo el indice
+    id = 1;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", `http://localhost:8080/proyecto/Proyectos?id=${id}`, true);
+    xhr.onload = function () {
+        project = JSON.parse(this.responseText);
+        console.log(project);
+    };
 
+    xhr.send();
   // selected = proyectos[id]
-  selected = {
-    id: 0,
-    name: "Apple",
-    description: "lorem ipsum",
-    date: "10/10/21",
-    collabs: [{ name: "Pepe", uid: 0 }],
-  };
+  //  selected = {
+  //   id: 0,
+  //   name: "Apple",
+  //   description: "lorem ipsum",
+  //   date: "10/10/21",
+  //   collabs: [{ name: "Pepe", uid: 0 }],
+  // };
 
-  const edit = document.getElementById("editForm");
-  edit.elements["name"].value = selected.name;
-  edit.elements["description"].value = selected.description;
+  // const edit = document.getElementById("editForm");
+  // edit.elements["name"].value = selected.name;
+  // edit.elements["description"].value = selected.description;
 
-  selected.collabs.forEach(paintEditCollabs);
-  console.log(selected);
+  // selected.collabs.forEach(paintEditCollabs);
+  // console.log(selected);
 }
 
 getProjects();

@@ -14,13 +14,16 @@ public class Proyectos extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
 
-        String option, json;
+        String option, collabs, json;
         option = request.getParameter("id");
+        collabs = request.getParameter("collabs");
 
-        if (option == null) {
+        if (option == null && collabs == null) {
             json = getProjects();
-        } else {
+        } else if (collabs == null){
             json = getProject(Integer.parseInt(option));
+        } else {
+            json = getCollaborators();
         }
 
         PrintWriter out = response.getWriter();
@@ -69,27 +72,11 @@ public class Proyectos extends HttpServlet {
 
         public void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
-        String json;
-        Project project;
-        Gson gson = new Gson();
 
-        StringBuffer jb = new StringBuffer();
-        String line = null;
-        try {
-            BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null)
-                jb.append(line);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String id, json;
 
-        try {
-            project = gson.fromJson(jb.toString(), Project.class);
-        } catch (Exception e) {
-            throw new IOException("Error parsing JSON request string");
-        }
-
-        json = deleteProject(project.id);
+        id = request.getParameter("id");
+        json = deleteProject(Integer.parseInt(id));
 
         PrintWriter out = response.getWriter();
 
@@ -117,11 +104,17 @@ public class Proyectos extends HttpServlet {
 
     public String updateProject(Project project) {
         ProjectDAO dao = new ProjectDAO();
-        return dao.updateProject(project);
+        dao.updateProject(project);
+        return dao.getResult();
     }
 
     public String deleteProject(int id) {
         ProjectDAO dao = new ProjectDAO();
         return dao.deleteProject(id);
+    }
+
+    public String getCollaborators() {
+        ProjectDAO dao = new ProjectDAO();
+        return dao.getCollaborators();
     }
 }

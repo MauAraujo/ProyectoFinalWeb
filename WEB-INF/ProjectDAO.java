@@ -131,18 +131,18 @@ public class ProjectDAO {
         id = rs.getInt("id");
       }
 
-      rs = stmt.executeQuery("SELECT * FROM `collaborators`");
+      // rs = stmt.executeQuery("SELECT * FROM `collaborators`");
 
-      for (Collaborator collab: project.collabs) {
-        rs.moveToInsertRow();
-        rs.updateString("name", collab.name);
-        rs.insertRow();
-        rs.moveToCurrentRow();
+      // for (Collaborator collab: project.collabs) {
+      //   rs.moveToInsertRow();
+      //   rs.updateString("name", collab.name);
+      //   rs.insertRow();
+      //   rs.moveToCurrentRow();
 
-        while (rs.next()) {
-            collab.setUid(rs.getInt("id"));
-        }
-      }
+      //   while (rs.next()) {
+      //       collab.setUid(rs.getInt("uid"));
+      //   }
+      // }
 
 
       rs = stmt.executeQuery("SELECT * FROM `collaborator-projects`");
@@ -155,7 +155,6 @@ public class ProjectDAO {
           rs.moveToCurrentRow();
       }
 
-      crs.close();
       rs.close();
       stmt.close();
       conn.close();
@@ -172,7 +171,7 @@ public class ProjectDAO {
   public String updateProject(Project project) {
     Gson gson = new Gson();
     String name, cname, description, date;
-    ArrayList < Collaborator > collabs = new ArrayList < Collaborator > ();
+    ArrayList < Collaborator > collabs = project.collabs;
     int id = 0;
     int uid = 0;
 
@@ -181,38 +180,40 @@ public class ProjectDAO {
       Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
       Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
       ResultSet rs = stmt.executeQuery("SELECT * FROM `projects` WHERE id = " + project.id);
+      result = gson.toJson(project);
 
-      rs.updateString("name", project.name);
-      rs.updateString("description", project.description);
-      rs.updateString("date", project.date);
-      rs.updateRow();
-      rs.moveToCurrentRow();
-
-      rs = stmt.executeQuery("SELECT * FROM `collaborators`");
-
-      for (Collaborator collab: project.collabs) {
-        rs.moveToInsertRow();
-        rs.updateString("name", collab.name);
-        rs.insertRow();
-        rs.moveToCurrentRow();
-
-        while (rs.next()) {
-            collab.setUid(rs.getInt("id"));
-        }
+      while(rs.next()) {
+          rs.updateString("name", project.name);
+          rs.updateString("description", project.description);
+          rs.updateString("date", project.date);
+          rs.updateRow();
       }
 
+      // rs = stmt.executeQuery("SELECT * FROM `collaborators`");
+
+      // for (Collaborator collab: project.collabs) {
+      //   rs.moveToInsertRow();
+      //   rs.updateString("name", collab.name);
+      //   rs.insertRow();
+      //   rs.moveToCurrentRow();
+
+      //   while (rs.next()) {
+      //       collab.setUid(rs.getInt("uid"));
+      //   }
+      // }
+
+      stmt.executeUpdate("DELETE FROM `collaborator-projects` WHERE projectid = " + project.id);
 
       rs = stmt.executeQuery("SELECT * FROM `collaborator-projects`");
 
-      for (Collaborator collab: project.collabs) {
+      for(Collaborator collab : collabs) {
           rs.moveToInsertRow();
           rs.updateInt("uid", collab.uid);
-          rs.updateInt("projectid", id);
+          rs.updateInt("projectid", project.id);
           rs.insertRow();
           rs.moveToCurrentRow();
       }
 
-      crs.close();
       rs.close();
       stmt.close();
       conn.close();
@@ -227,15 +228,46 @@ public class ProjectDAO {
   }
 
   public String deleteProject(int id) {
+    int response = -1;
     Gson gson = new Gson();
 
     try {
       Class.forName("com.mysql.jdbc.Driver");
       Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
       Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-      ResultSet rs = stmt.executeQuery("SELECT * FROM `projects` WHERE id = " + id);
 
-      rs.deleteRow();
+      response = stmt.executeUpdate("DELETE FROM `projects` WHERE id = " + id);
+      stmt.executeUpdate("DELETE FROM `collaborator-projects` WHERE projectid = " + id);
+
+      stmt.close();
+      conn.close();
+    } catch (ClassNotFoundException e) {
+      result = e.getMessage();
+      e.printStackTrace();
+    } catch (SQLException e) {
+      result = e.getMessage();
+      e.printStackTrace();
+    }
+    return gson.toJson(response);
+  }
+
+    public String getCollaborators() {
+    Gson gson = new Gson();
+    String name;
+    ArrayList < Collaborator > collabs = new ArrayList < Collaborator > ();
+    int uid;
+
+    try {
+      Class.forName("com.mysql.jdbc.Driver");
+      Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
+      Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+      ResultSet rs = stmt.executeQuery("SELECT * FROM `collaborators`");
+
+      while (rs.next()) {
+        uid = rs.getInt("uid");
+        name = rs.getString("name");
+        collabs.add(new Collaborator(uid, name));
+      }
 
       rs.close();
       stmt.close();
@@ -247,7 +279,7 @@ public class ProjectDAO {
       result = e.getMessage();
       e.printStackTrace();
     }
-    return gson.toJson(id);
+    return gson.toJson(collabs);
   }
 
   public String getResult() {

@@ -12,4 +12,8 @@ public class Collaborator {
     public void setUid(int uid) {
         this.uid = uid;
     }
+
+    public int getUid() {
+        return this.uid;
+    }
 }
