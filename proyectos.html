@@ -126,14 +126,13 @@
                   <button type="button" class="btn btn-outline-danger">
                     Eliminar
                   </button>
-
                   <!--TODO: Editar un proyecto -->
                   <button
                     type="button"
                     class="btn btn-outline-warning"
                     data-bs-toggle="modal"
                     data-bs-target="#editModal"
-                    onclick="getProject(2)"
+                    onclick="selectProject(2)"
                   >
                     Editar
                   </button>
@@ -232,7 +231,7 @@
                 type="button"
                 class="btn btn-outline-secondary"
                 data-bs-dismiss="modal"
-                onclick="cleanNewProject()"
+                onclick="cleanProject()"
               >
                 Cancelar
               </button>
@@ -255,7 +254,7 @@
         aria-labelledby="editModalLabel"
         aria-hidden="true"
       >
-        <form class="modal-dialog">
+        <form id="editForm" class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="editModalLabel">Proyecto</h5>
@@ -279,12 +278,12 @@
                 />
               </div>
               <div class="mb-3">
-                <label for="descirption" class="form-label"
+                <label for="description" class="form-label"
                   >Descripción del Proyecto</label
                 >
                 <textarea
                   class="form-control"
-                  id="descirption"
+                  id="description"
                   name="description"
                   rows="3"
                 >
@@ -295,54 +294,22 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, sit et seq
               <div class="mb-3">
                 <label class="form-label">Colaboradores</label>
                 <ul
-                  id="collabs"
+                  id="editCollabs"
                   class="list-group list-group-horizontal list-group-flush scrollable my-2"
-                >
-                  <li class="list-group-item border-less">
-                    <p
-                      class="d-flex flex-column align-items-center justify-content-center"
-                    >
-                      <i class="bi bi-person d-block fs-2 text-primary"></i
-                      ><span class="text-center m-0">Colaborador</span>
-                    </p>
-                  </li>
-                  <li class="list-group-item border-less">
-                    <p
-                      class="d-flex flex-column align-items-center justify-content-center"
-                    >
-                      <i class="bi bi-person d-block fs-2 text-primary"></i
-                      ><span class="text-center m-0">Colaborador</span>
-                    </p>
-                  </li>
-                  <li class="list-group-item border-less">
-                    <p
-                      class="d-flex flex-column align-items-center justify-content-center"
-                    >
-                      <i class="bi bi-person d-block fs-2 text-primary"></i
-                      ><span class="text-center m-0">Colaborador</span>
-                    </p>
-                  </li>
-                  <li class="list-group-item border-less">
-                    <p
-                      class="d-flex flex-column align-items-center justify-content-center"
-                    >
-                      <i class="bi bi-person d-block fs-2 text-primary"></i
-                      ><span class="text-center m-0">Colaborador</span>
-                    </p>
-                  </li>
-                </ul>
-                <!-- <div id="collabs" class="d-flex scrollable">
-                  <i
-                    class="bi bi-person d-block mb-2 me-3 fs-2 text-primary"
-                  ></i>
-                </div> -->
-                <button
-                  type="button"
+                ></ul>
+
+                <select
                   class="btn btn-primary"
-                  onclick="addCollab()"
+                  id="editCollabSelect"
+                  onchange="addCollabEdit()"
                 >
-                  <i class="bi bi-plus-circle mx-2"></i>Agregar Colaborador
-                </button>
+                  <option value="" selected disabled hidden>
+                    Elige un colaborador
+                  </option>
+                  <option value="1">Colaborador 1</option>
+                  <option value="2">Colaborador 2</option>
+                  <option value="3">Colaborador 3</option>
+                </select>
               </div>
             </div>
             <div class="modal-footer">
@@ -350,10 +317,18 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, sit et seq
                 type="button"
                 class="btn btn-outline-secondary"
                 data-bs-dismiss="modal"
+                onclick="cleanProject()"
               >
                 Cancelar
               </button>
-              <button type="submit" class="btn btn-success">Submit</button>
+              <button
+                type="button"
+                data-bs-dismiss="modal"
+                onclick="saveProject()"
+                class="btn btn-success"
+              >
+                Guardar cambios
+              </button>
             </div>
           </div>
         </form>
