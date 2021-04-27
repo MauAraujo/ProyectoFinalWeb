@@ -11,8 +11,10 @@ public class CRCDAO {
 
   public String getCRCs() {
     Gson gson = new Gson();
-    String crClass, superclass;
+    String crClass, superclass, responsibility, collaboration;
     ArrayList < CRC > crcs = new ArrayList < CRC > ();
+    ArrayList < String > responsibilities = new ArrayList < String > ();
+    ArrayList < String > collaborations = new ArrayList < String > ();
     int id, projectid;
 
     try {
@@ -27,6 +29,26 @@ public class CRCDAO {
         crClass = rs.getString("class");
         superclass = rs.getString("superclass");
         crcs.add(new CRC(id, projectid, crClass, superclass));
+      }
+
+      for (CRC crc: crcs) {
+        rs = stmt.executeQuery("SELECT * FROM `crc-responsibilities` WHERE crc = " + crc.id);
+        while (rs.next()) {
+          responsibility = rs.getString("responsibility");
+          responsibilities.add(responsibility);
+        }
+        crc.setResponsibilities(responsibilities);
+        responsibilities.clear();
+      }
+
+      for (CRC crc: crcs) {
+        rs = stmt.executeQuery("SELECT * FROM `crc-collaborations` WHERE crc = " + crc.id);
+        while (rs.next()) {
+          collaboration = rs.getString("collaboration");
+          collaborations.add(collaboration);
+        }
+        crc.setCollaborations(collaborations);
+        collaborations.clear();
       }
 
       rs.close();
@@ -44,8 +66,10 @@ public class CRCDAO {
 
   public String getCRC(int id) {
     Gson gson = new Gson();
-    String crClass, superclass;
+    String crClass, superclass, responsibility, collaboration;
     CRC crc = null;
+    ArrayList < String > responsibilities = new ArrayList < String > ();
+    ArrayList < String > collaborations = new ArrayList < String > ();
     int projectid;
 
     try {
@@ -61,6 +85,22 @@ public class CRCDAO {
         superclass = rs.getString("superclass");
         crc = new CRC(id, projectid, crClass, superclass);
       }
+
+      rs = stmt.executeQuery("SELECT * FROM `crc-responsibilities` WHERE crc = " + id);
+      while (rs.next()) {
+        responsibility = rs.getString("responsibility");
+        responsibilities.add(responsibility);
+      }
+      crc.setResponsibilities(responsibilities);
+      responsibilities.clear();
+
+      rs = stmt.executeQuery("SELECT * FROM `crc-collaborations` WHERE crc = " + id);
+      while (rs.next()) {
+        collaboration = rs.getString("collaboration");
+        collaborations.add(collaboration);
+      }
+      crc.setCollaborations(collaborations);
+      collaborations.clear();
 
       rs.close();
       stmt.close();
@@ -90,6 +130,22 @@ public class CRCDAO {
       rs.updateString("superclass", crc.superclass);
       rs.insertRow();
 
+      for (String responsibility: crc.responsibilities) {
+        rs = stmt.executeQuery("SELECT * FROM `crc-responsibilities`");
+        rs.moveToInsertRow();
+        rs.updateInt("crc", crc.id);
+        rs.updateString("responsibility", responsibility);
+        rs.insertRow();
+      }
+
+      for (String collaboration: crc.collaborations) {
+        rs = stmt.executeQuery("SELECT * FROM `crc-collaborations`");
+        rs.moveToInsertRow();
+        rs.updateInt("crc", crc.id);
+        rs.updateString("collaboration", collaboration);
+        rs.insertRow();
+      }
+
       rs.close();
       stmt.close();
       conn.close();
@@ -104,26 +160,28 @@ public class CRCDAO {
   }
 
   public String deleteCRC(int id) {
-      int response = -1;
-      Gson gson = new Gson();
+    int response = -1;
+    Gson gson = new Gson();
 
-      try {
-          Class.forName("com.mysql.jdbc.Driver");
-          Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
-          Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+    try {
+      Class.forName("com.mysql.jdbc.Driver");
+      Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
+      Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
-          response = stmt.executeUpdate("DELETE FROM `crc` WHERE id = " + id);
+      response = stmt.executeUpdate("DELETE FROM `crc` WHERE id = " + id);
+      stmt.executeUpdate("DELETE FROM `crc-responsibilities` WHERE crc = " + id);
+      stmt.executeUpdate("DELETE FROM `crc-collaborations` WHERE crc = " + id);
 
-          stmt.close();
-          conn.close();
-      } catch (ClassNotFoundException e) {
-          result = e.getMessage();
-          e.printStackTrace();
-      } catch (SQLException e) {
-          result = e.getMessage();
-          e.printStackTrace();
-      }
-      return gson.toJson(response);
+      stmt.close();
+      conn.close();
+    } catch (ClassNotFoundException e) {
+      result = e.getMessage();
+      e.printStackTrace();
+    } catch (SQLException e) {
+      result = e.getMessage();
+      e.printStackTrace();
+    }
+    return gson.toJson(response);
   }
 
   public String getResult() {
