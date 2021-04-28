@@ -129,6 +129,7 @@ public class ProjectDAO {
 
       while (rs.next()) {
         id = rs.getInt("id");
+        project.id = id;
       }
 
       // rs = stmt.executeQuery("SELECT * FROM `collaborators`");

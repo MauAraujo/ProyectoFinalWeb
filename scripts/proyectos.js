@@ -104,7 +104,8 @@ function paintProject(formData) {
   del.classList.add("btn", "btn-outline-danger");
   del.type = "button";
   del.innerHTML = "Eliminar";
-  del.onclick = `deleteProject(${formData.id})`;
+  del.setAttribute("onclick", `deleteProject(${formData.id})`);
+
 
   const edit = document.createElement("button");
   edit.classList.add("btn", "btn-outline-warning");
@@ -112,7 +113,8 @@ function paintProject(formData) {
   edit.innerHTML = "Editar";
   edit.dataset.bsToggle = "modal";
   edit.dataset.bsTarget = "#editModal";
-  edit.onclick = `selectProject(${formData.id})`;
+  edit.setAttribute("onclick", `selectProject(${formData.id})`);
+
 
   const open = document.createElement("a");
   open.classList.add("btn", "btn-outline-primary");
@@ -144,10 +146,20 @@ function editProject() {
     collabs: editCollabs,
     name: form.elements["name"].value,
     description: form.elements["description"].value,
+    date: Date()
   };
 
   // TODO: Servicio PUT Proyecto
   // selected es el que debe tener el proyecto que se va a editar
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", `http://localhost:8080/proyecto/Proyectos`, true);
+    xhr.onload = function () {
+        selected = JSON.parse(this.responseText);
+        console.log(selected);
+    };
+
+    xhr.send(JSON.stringify(data));
 
   // Esto es para que vuelva a pintar todos los proyectos nuevamente
   getProjects();
@@ -292,12 +304,12 @@ function getCollabs() {
     true
   );
   xhr.onload = function () {
-    collabs = JSON.parse(this.responseText);
-    console.log(collabs);
+    collabsList = JSON.parse(this.responseText);
+    console.log(collabsList);
+    setCollabs();
   };
 
   xhr.send();
-  setCollabs();
 }
 
 function setCollabs() {
@@ -342,14 +354,13 @@ function getProjects() {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "http://localhost:8080/proyecto/Proyectos", true);
   xhr.onload = function () {
-    projects = JSON.parse(this.responseText);
-    console.log(projects);
+      projects = JSON.parse(this.responseText);
+      const row = document.getElementById("projects-row");
+      row.innerHTML = "";
+      projects.forEach(paintProject);
   };
 
   xhr.send();
-  const row = document.getElementById("projects-row");
-  row.innerHTML = "";
-  projects.forEach(paintProject);
 }
 
 function deleteProject(id) {
@@ -372,8 +383,14 @@ function selectProject(id) {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", `http://localhost:8080/proyecto/Proyectos?id=${id}`, true);
   xhr.onload = function () {
-    selected = JSON.parse(this.responseText);
-    console.log(project);
+      selected = JSON.parse(this.responseText);
+      console.log(id);
+      console.log(selected);
+      const edit = document.getElementById("editForm");
+      edit.elements["name"].value = selected.name;
+      edit.elements["description"].value = selected.description;
+
+      selected.collabs.forEach(paintEditCollabs);
   };
 
   xhr.send();
@@ -385,12 +402,6 @@ function selectProject(id) {
   //   date: "10/10/21",
   //   collabs: [{ name: "Pepe", uid: 0 }],
   // };
-
-  const edit = document.getElementById("editForm");
-  edit.elements["name"].value = selected.name;
-  edit.elements["description"].value = selected.description;
-
-  selected.collabs.forEach(paintEditCollabs);
 }
 
 getProjects();
