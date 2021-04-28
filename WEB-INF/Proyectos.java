@@ -104,8 +104,7 @@ public class Proyectos extends HttpServlet {
 
     public String updateProject(Project project) {
         ProjectDAO dao = new ProjectDAO();
-        dao.updateProject(project);
-        return dao.getResult();
+        return dao.updateProject(project);
     }
 
     public String deleteProject(int id) {

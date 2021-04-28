@@ -31,6 +31,15 @@
       <servlet-name>Proyectos</servlet-name>
       <url-pattern>/Proyectos</url-pattern>
    </servlet-mapping>
+
+   <servlet>
+      <servlet-name>Historias</servlet-name>
+      <servlet-class>projects.Historias</servlet-class>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>Historias</servlet-name>
+      <url-pattern>/Historias</url-pattern>
+   </servlet-mapping>
  
     <welcome-file-list>
         <welcome-file>proyectos.html</welcome-file>

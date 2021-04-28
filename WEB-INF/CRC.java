@@ -4,23 +4,23 @@ import java.util.ArrayList;
 
 public class CRC {
     int id, projectid;
-    String crClass, superclass;
+    String name, superclass;
     ArrayList < String > responsibilities;
     ArrayList < String > collaborations;
 
-    public CRC(int id, int projectid, String crClass, String superclass, ArrayList < String > responsibilities, ArrayList < String > collaborations) {
+    public CRC(int id, int projectid, String name, String superclass, ArrayList < String > responsibilities, ArrayList < String > collaborations) {
         this.id = id;
         this.projectid = projectid;
-        this.crClass = crClass;
+        this.name = name;
         this.superclass = superclass;
         this.responsibilities = responsibilities;
         this.collaborations = collaborations;
     }
 
-    public CRC(int id, int projectid, String crClass, String superclass) {
+    public CRC(int id, int projectid, String name, String superclass) {
         this.id = id;
         this.projectid = projectid;
-        this.crClass = crClass;
+        this.name = name;
         this.superclass = superclass;
     }
 

@@ -11,12 +11,12 @@ function createStorie() {
   const form = document.getElementById("storiesForm");
   const data = {
     title: form.elements["title"].value,
-    id: form.elements["storieId"].value,
+    projectid: projectID,
     description: form.elements["description"].value,
     date: form.elements["date"].value,
-    score: form.elements["score"].value,
+    value: form.elements["score"].value,
     observations: form.elements["observations"].value,
-    time: form.elements["time"].value,
+    days: form.elements["time"].value,
     timeSelect:
       document.querySelector('input[name="timeSelect"]:checked').value ||
       "days",
@@ -24,7 +24,15 @@ function createStorie() {
 
   paintStory(data);
 
-  // TODO: Guardar en la base de datos
+    // TODO: Guardar en la base de datos
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:8080/proyecto/Historias?type=story", true);
+    xhr.onload = function () {
+        story = JSON.parse(this.responseText);
+        console.log(story);
+    };
+
+    xhr.send(JSON.stringify(data));
   // saveStory(data)
 }
 
@@ -90,7 +98,16 @@ function saveStlory(data) {
   // TODO: Servicio POST de Historia
 }
 function deleteStory(id) {
-  // TODO: Servicio DELETE de Historia
+    // TODO: Servicio DELETE de Historia
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("DELETE", `http://localhost:8080/proyecto/Historias?id=${id}&type=story`, true);
+    xhr.onload = function () {
+        historias = JSON.parse(this.responseText);
+        console.log(historias);
+        getStories();
+    };
+    xhr.send();
 }
 
 function getStories() {
@@ -98,11 +115,19 @@ function getStories() {
   // TODO: Servicio GET de Historias
   // historias =
 
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://localhost:8080/proyecto/Historias?type=story", true);
+    xhr.onload = function () {
+        historias = JSON.parse(this.responseText);
+        console.log(historias);
+        const stories = document.getElementById("stories");
+        stories.innerHTML = "";
+        historias.forEach(paintStory);
+    };
+
+    xhr.send();
   // Esto va a repintar cada que se incie la app y
   // cada que se borre una historia
-  const stories = document.getElementById("stories");
-  stories.innerHTML = "";
-  historias.forEach(paintStory);
 }
 
 getProjectID();

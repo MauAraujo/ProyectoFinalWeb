@@ -236,8 +236,8 @@ public class ProjectDAO {
       Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
       Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
-      response = stmt.executeUpdate("DELETE FROM `projects` WHERE id = " + id);
       stmt.executeUpdate("DELETE FROM `collaborator-projects` WHERE projectid = " + id);
+      response = stmt.executeUpdate("DELETE FROM `projects` WHERE id = " + id);
 
       stmt.close();
       conn.close();
