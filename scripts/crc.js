@@ -50,6 +50,35 @@ function paintCRC(data) {
 
   body.appendChild(title);
   body.appendChild(subtitle);
+
+  const respHtml = document.createElement("p");
+  respHtml.classList.add("my-5");
+  const respHtmlTitle = document.createElement("h5");
+  respHtmlTitle.innerHTML = "Responsabilidades";
+  respHtml.appendChild(respHtmlTitle);
+
+  data.responsibilities.forEach((resp) => {
+    const spanHtml = document.createElement("span");
+    spanHtml.innerHTML = resp;
+    respHtml.appendChild(spanHtml);
+  });
+
+  body.appendChild(respHtml);
+
+  const collabHtml = document.createElement("p");
+  collabHtml.classList.add("my-5");
+  const collabHtmlTitle = document.createElement("h5");
+  collabHtmlTitle.innerHTML = "Colaboraciones";
+  collabHtml.appendChild(collabHtmlTitle);
+
+  data.collaborations.forEach((resp) => {
+    const spanHtml = document.createElement("span");
+    spanHtml.innerHTML = resp;
+    collabHtml.appendChild(spanHtml);
+  });
+
+  body.appendChild(collabHtml);
+
   body.appendChild(pHtml);
 
   card.appendChild(body);

@@ -64,6 +64,14 @@ function paintStory(data) {
     data.timeSelect === "days" ? "Días" : "Semanas"
   }`;
 
+  const descriptionHtml = document.createElement("p");
+  descriptionHtml.classList.add("text-center", "my-5");
+  descriptionHtml.innerText = data.description || "";
+
+  const observationsHtml = document.createElement("p");
+  observationsHtml.classList.add("text-center", "my-5");
+  observationsHtml.innerText = data.observations || "";
+
   const pHtml = document.createElement("p");
   pHtml.classList.add("mt-5");
 
@@ -80,6 +88,9 @@ function paintStory(data) {
   body.appendChild(date);
   body.appendChild(storieId);
   body.appendChild(days);
+  body.appendChild(descriptionHtml);
+  body.appendChild(observationsHtml);
+
   body.appendChild(pHtml);
 
   card.appendChild(body);
@@ -95,6 +106,7 @@ function getRandomInt(min, max) {
 function saveStlory(data) {
   // TODO: Servicio POST de Historia
 }
+
 function deleteStory(id) {
   // TODO: Servicio DELETE de Historia
 
