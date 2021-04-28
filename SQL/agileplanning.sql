@@ -2,10 +2,10 @@
 -- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Apr 28, 2021 at 05:13 PM
+-- Host: 127.0.0.1
+-- Generation Time: Apr 28, 2021 at 07:09 PM
 -- Server version: 10.4.18-MariaDB
--- PHP Version: 8.0.3
+-- PHP Version: 7.3.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,10 +38,11 @@ CREATE TABLE `collaborator-projects` (
 --
 
 INSERT INTO `collaborator-projects` (`id`, `uid`, `projectid`) VALUES
-(1, 1, 1),
-(2, 2, 1),
-(3, 3, 1),
-(4, 4, 1);
+(20, 1, 6),
+(21, 2, 6),
+(31, 3, 9),
+(32, 4, 9),
+(33, 1, 9);
 
 -- --------------------------------------------------------
 
@@ -80,6 +81,13 @@ CREATE TABLE `crc` (
   `superclass` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `crc`
+--
+
+INSERT INTO `crc` (`id`, `projectid`, `class`, `superclass`) VALUES
+(4, 8, 'Usuario', '');
+
 -- --------------------------------------------------------
 
 --
@@ -104,6 +112,13 @@ CREATE TABLE `crc-responsibilities` (
   `responsibility` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `crc-responsibilities`
+--
+
+INSERT INTO `crc-responsibilities` (`id`, `crc`, `responsibility`) VALUES
+(4, 4, 'Iniciar sesión');
+
 -- --------------------------------------------------------
 
 --
@@ -122,7 +137,8 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`name`, `description`, `date`, `id`) VALUES
-('Adopcion de mascotas', 'Aplicacion web para adopcion de mascotas', 'Wed Apr 28 2021 00:28:44 GMT-0500 (Central Daylight Time)', 1);
+('Citrus', 'Aplicación móvil para el apoyo al aprendizaje.', 'Wed Apr 28 2021 11:33:15 GMT-0500 (Central Daylight Time)', 6),
+('Adopción de Mascotas', 'Página web para el apoyo a la adopción de mascotas', 'Wed Apr 28 2021 11:45:19 GMT-0500 (Central Daylight Time)', 9);
 
 -- --------------------------------------------------------
 
@@ -142,6 +158,13 @@ CREATE TABLE `user-stories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `user-stories`
+--
+
+INSERT INTO `user-stories` (`id`, `projectid`, `title`, `description`, `date`, `value`, `observations`, `days`) VALUES
+(3, 8, 'Crear vista principal', 'Implementar el diseño aprobado en la aplicación.', '2021-04-28', 10, 'Sin observaciones', 5);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -149,9 +172,7 @@ CREATE TABLE `user-stories` (
 -- Indexes for table `collaborator-projects`
 --
 ALTER TABLE `collaborator-projects`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
-  ADD KEY `collaborator-project` (`projectid`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `collaborators`
@@ -163,25 +184,19 @@ ALTER TABLE `collaborators`
 -- Indexes for table `crc`
 --
 ALTER TABLE `crc`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
-  ADD KEY `crc-project` (`projectid`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `crc-collaborations`
 --
 ALTER TABLE `crc-collaborations`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
-  ADD KEY `crc-collaboration` (`crc`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `crc-responsibilities`
 --
 ALTER TABLE `crc-responsibilities`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
-  ADD KEY `crc-responsibility` (`crc`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `projects`
@@ -193,9 +208,7 @@ ALTER TABLE `projects`
 -- Indexes for table `user-stories`
 --
 ALTER TABLE `user-stories`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
-  ADD KEY `story-project` (`projectid`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -205,7 +218,7 @@ ALTER TABLE `user-stories`
 -- AUTO_INCREMENT for table `collaborator-projects`
 --
 ALTER TABLE `collaborator-projects`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `collaborators`
@@ -217,65 +230,31 @@ ALTER TABLE `collaborators`
 -- AUTO_INCREMENT for table `crc`
 --
 ALTER TABLE `crc`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `crc-collaborations`
 --
 ALTER TABLE `crc-collaborations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `crc-responsibilities`
 --
 ALTER TABLE `crc-responsibilities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `user-stories`
 --
 ALTER TABLE `user-stories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `collaborator-projects`
---
-ALTER TABLE `collaborator-projects`
-  ADD CONSTRAINT `collaborator-project` FOREIGN KEY (`projectid`) REFERENCES `projects` (`id`);
-
---
--- Constraints for table `crc`
---
-ALTER TABLE `crc`
-  ADD CONSTRAINT `crc-project` FOREIGN KEY (`projectid`) REFERENCES `projects` (`id`);
-
---
--- Constraints for table `crc-collaborations`
---
-ALTER TABLE `crc-collaborations`
-  ADD CONSTRAINT `crc-collaboration` FOREIGN KEY (`crc`) REFERENCES `crc` (`id`);
-
---
--- Constraints for table `crc-responsibilities`
---
-ALTER TABLE `crc-responsibilities`
-  ADD CONSTRAINT `crc-responsibility` FOREIGN KEY (`crc`) REFERENCES `crc` (`id`);
-
---
--- Constraints for table `user-stories`
---
-ALTER TABLE `user-stories`
-  ADD CONSTRAINT `story-project` FOREIGN KEY (`projectid`) REFERENCES `projects` (`id`);
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

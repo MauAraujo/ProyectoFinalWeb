@@ -363,10 +363,10 @@ function deleteProject(id) {
   xhr.onload = function () {
     response = JSON.parse(this.responseText);
     console.log(response);
+  	getProjects();
   };
 
   xhr.send();
-  getProjects();
 }
 
 function selectProject(id) {
