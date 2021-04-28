@@ -11,7 +11,7 @@ public class CRCDAO {
 
   public String getCRCs() {
     Gson gson = new Gson();
-    String crClass, superclass, responsibility, collaboration;
+    String name, superclass, responsibility, collaboration;
     ArrayList < CRC > crcs = new ArrayList < CRC > ();
     ArrayList < String > responsibilities = new ArrayList < String > ();
     ArrayList < String > collaborations = new ArrayList < String > ();
@@ -26,9 +26,9 @@ public class CRCDAO {
       while (rs.next()) {
         id = rs.getInt("id");
         projectid = rs.getInt("projectid");
-        crClass = rs.getString("class");
+        name = rs.getString("class");
         superclass = rs.getString("superclass");
-        crcs.add(new CRC(id, projectid, crClass, superclass));
+        crcs.add(new CRC(id, projectid, name, superclass));
       }
 
       for (CRC crc: crcs) {
@@ -66,7 +66,7 @@ public class CRCDAO {
 
   public String getCRC(int id) {
     Gson gson = new Gson();
-    String crClass, superclass, responsibility, collaboration;
+    String name, superclass, responsibility, collaboration;
     CRC crc = null;
     ArrayList < String > responsibilities = new ArrayList < String > ();
     ArrayList < String > collaborations = new ArrayList < String > ();
@@ -81,9 +81,9 @@ public class CRCDAO {
       while (rs.next()) {
         id = rs.getInt("id");
         projectid = rs.getInt("projectid");
-        crClass = rs.getString("class");
+        name = rs.getString("class");
         superclass = rs.getString("superclass");
-        crc = new CRC(id, projectid, crClass, superclass);
+        crc = new CRC(id, projectid, name, superclass);
       }
 
       rs = stmt.executeQuery("SELECT * FROM `crc-responsibilities` WHERE crc = " + id);
@@ -117,7 +117,7 @@ public class CRCDAO {
 
   public String createCRC(CRC crc) {
     Gson gson = new Gson();
-
+    result = gson.toJson(crc);
     try {
       Class.forName("com.mysql.jdbc.Driver");
       Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
@@ -126,9 +126,14 @@ public class CRCDAO {
 
       rs.moveToInsertRow();
       rs.updateInt("projectid", crc.projectid);
-      rs.updateString("class", crc.crClass);
+      rs.updateString("class", crc.name);
       rs.updateString("superclass", crc.superclass);
       rs.insertRow();
+      rs.moveToCurrentRow();
+
+      while(rs.next()) {
+          crc.id = rs.getInt("id");
+      }
 
       for (String responsibility: crc.responsibilities) {
         rs = stmt.executeQuery("SELECT * FROM `crc-responsibilities`");
@@ -168,9 +173,9 @@ public class CRCDAO {
       Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
       Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
-      response = stmt.executeUpdate("DELETE FROM `crc` WHERE id = " + id);
       stmt.executeUpdate("DELETE FROM `crc-responsibilities` WHERE crc = " + id);
       stmt.executeUpdate("DELETE FROM `crc-collaborations` WHERE crc = " + id);
+      response = stmt.executeUpdate("DELETE FROM `crc` WHERE id = " + id);
 
       stmt.close();
       conn.close();

@@ -1,6 +1,6 @@
 let newCollabs = [];
 let editCollabs = [];
-// TODO: Recibirlo del servicio
+
 let collabsList = [
   { name: "Pepe", uid: 0 },
   { name: "Diana", uid: 1 },
@@ -23,12 +23,9 @@ function createProject() {
   saveProject(formData);
 
   // paintProject({ ...formData, id: projectID });
-  getProjects();
-  cleanProject();
 }
 
 function saveProject(formData) {
-  // TODO: Guardar proyecto en bd
   formData.date = Date();
   let project;
   var xhr = new XMLHttpRequest();
@@ -36,6 +33,8 @@ function saveProject(formData) {
   xhr.onload = function () {
     project = JSON.parse(this.responseText);
     console.log(project);
+    getProjects();
+    cleanProject();
   };
 
   xhr.send(JSON.stringify(formData));
@@ -139,7 +138,7 @@ function editProject() {
   const form = document.getElementById("editForm");
 
   const data = {
-    // TODO: No se que nombre es el de colaboradores dentro del servicio
+    id: selected.id,
     collabs: editCollabs,
     name: form.elements["name"].value,
     description: form.elements["description"].value,
@@ -154,12 +153,10 @@ function editProject() {
   xhr.onload = function () {
     selected = JSON.parse(this.responseText);
     console.log(selected);
+    getProjects();
   };
 
   xhr.send(JSON.stringify(data));
-
-  // Esto es para que vuelva a pintar todos los proyectos nuevamente
-  getProjects();
 }
 
 function cleanProject() {
@@ -218,8 +215,8 @@ function addCollab() {
 function addCollabEdit() {
   const id = document.getElementById("editCollabSelect").value;
 
-  const collab = collabsList[id];
-
+  const collab = collabsList.filter((e) => e.uid == id)[0];
+  console.log(collabsList);
   console.log(editCollabs);
   console.log(id);
   console.log(
@@ -341,7 +338,7 @@ function setCollabs() {
 
   collabsList.forEach((collab, index) => {
     const optionHtml = document.createElement("option");
-    optionHtml.value = index;
+    optionHtml.value = collab.uid;
     optionHtml.innerHTML = collab.name;
     editSelectHtml.appendChild(optionHtml);
   });

@@ -11,7 +11,7 @@ function createStorie() {
   const form = document.getElementById("storiesForm");
   const data = {
     title: form.elements["title"].value,
-    id: form.elements["storieId"].value,
+    projectid: projectID,
     description: form.elements["description"].value,
     date: form.elements["date"].value,
     value: form.elements["score"].value,
@@ -23,6 +23,14 @@ function createStorie() {
   paintStory(data);
 
   // TODO: Guardar en la base de datos
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://localhost:8080/proyecto/Historias?type=story", true);
+  xhr.onload = function () {
+    story = JSON.parse(this.responseText);
+    console.log(story);
+  };
+
+  xhr.send(JSON.stringify(data));
   // saveStory(data)
 }
 
@@ -89,6 +97,19 @@ function saveStlory(data) {
 }
 function deleteStory(id) {
   // TODO: Servicio DELETE de Historia
+
+  var xhr = new XMLHttpRequest();
+  xhr.open(
+    "DELETE",
+    `http://localhost:8080/proyecto/Historias?id=${id}&type=story`,
+    true
+  );
+  xhr.onload = function () {
+    historias = JSON.parse(this.responseText);
+    console.log(historias);
+    getStories();
+  };
+  xhr.send();
 }
 
 function getStories() {
@@ -96,11 +117,19 @@ function getStories() {
   // TODO: Servicio GET de Historias
   // historias =
 
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "http://localhost:8080/proyecto/Historias?type=story", true);
+  xhr.onload = function () {
+    historias = JSON.parse(this.responseText);
+    console.log(historias);
+    const stories = document.getElementById("stories");
+    stories.innerHTML = "";
+    historias.forEach(paintStory);
+  };
+
+  xhr.send();
   // Esto va a repintar cada que se incie la app y
   // cada que se borre una historia
-  const stories = document.getElementById("stories");
-  stories.innerHTML = "";
-  historias.forEach(paintStory);
 }
 
 getProjectID();
