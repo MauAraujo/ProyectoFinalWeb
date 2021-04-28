@@ -176,7 +176,7 @@ function cleanProject() {
 function addCollab() {
   const id = document.getElementById("newCollabSelect").value;
 
-  const collab = collabsList[id];
+  const collab = collabsList.filter((e) => e.uid == id)[0];
   console.log(collab);
 
   if (newCollabs.find((element) => element.uid == id)) {
