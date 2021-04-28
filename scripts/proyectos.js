@@ -318,9 +318,9 @@ function setCollabs() {
 
   selectHtml.appendChild(defaultOption);
 
-  collabsList.forEach((collab, index) => {
+  collabsList.forEach((collab) => {
     const optionHtml = document.createElement("option");
-    optionHtml.value = index;
+    optionHtml.value = collab.uid;
     optionHtml.innerHTML = collab.name;
     selectHtml.appendChild(optionHtml);
   });
