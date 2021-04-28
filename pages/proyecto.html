@@ -88,7 +88,12 @@
       <section>
         <header class="d-flex justify-content-between m-5">
           <h1>CRC</h1>
-          <button type="button" class="btn btn-primary" onclick="createCRC()">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#crcModal"
+          >
             Añadir CRC
           </button>
         </header>
@@ -111,6 +116,102 @@
       Derechos reservados &copy; 2021 Mauricio Araujo y Noé Osorio
     </footer> -->
 
+    <div
+      class="modal fade"
+      id="crcModal"
+      tabindex="-1"
+      aria-labelledby="crcModalLabel"
+      aria-hidden="true"
+    >
+      <form id="crcForm" class="modal-dialog width-50">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="crcModalLabel">Nueva Historia</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <!-- <form> -->
+              <div class="row">
+                <div class="mb-3 col-md-8">
+                  <label for="name" class="form-label"
+                    >Nombre de la clase</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    placeholder="Ejemplo de Clase"
+                  />
+                </div>
+                <div class="mb-3 col-md-3 ms-auto">
+                  <label for="title" class="form-label">SuperClase</label>
+                  <select class="btn btn-primary" id="superClassSelect">
+                    <option value="" selected disabled hidden>
+                      Elige una Super Clase
+                    </option>
+                    <option value="1">superclase 1</option>
+                    <option value="2">superclase 2</option>
+                    <option value="3">superclase 3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="mb-3 col-md-6">
+                  <label class="form-label">Responsabilidades</label>
+                  <div id="responsabilites"></div>
+                  <button
+                    type="button"
+                    class="btn btn-primary mt-3"
+                    onclick="addResponsability()"
+                  >
+                    <i class="bi bi-plus-circle mx-2"></i>
+                    Agregar Responsabilidad
+                  </button>
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label class="form-label">Colaboraciones</label>
+                  <div id="colaborations"></div>
+                  <button
+                    type="button"
+                    class="btn btn-primary mt-3"
+                    onclick="addCollaboration()"
+                  >
+                    <i class="bi bi-plus-circle mx-2"></i>
+                    Agregar Colaboración
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+              onclick="clean()"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              data-bs-dismiss="modal"
+              onclick="createCRC()"
+              class="btn btn-success"
+            >
+              Guardar CRC
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
     <div
       class="modal fade"
       id="storiesModal"
@@ -255,7 +356,7 @@
               onclick="createStorie()"
               class="btn btn-success"
             >
-              Guardar cambios
+              Guardar Historia
             </button>
           </div>
         </div>
