@@ -20,7 +20,7 @@ function createStorie() {
     timeSelect: "days",
   };
 
-  paintStory(data);
+  // paintStory(data);
 
   cleanStoryForm();
 
@@ -30,6 +30,7 @@ function createStorie() {
   xhr.onload = function () {
     story = JSON.parse(this.responseText);
     console.log(story);
+    getStories();
   };
 
   xhr.send(JSON.stringify(data));
