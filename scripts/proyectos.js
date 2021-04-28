@@ -6,7 +6,7 @@ let collabsList = [
   { name: "Diana", uid: 1 },
 ];
 
-let proyectos = [];
+let projects = [];
 
 let selected = {};
 
@@ -27,21 +27,19 @@ function createProject() {
 }
 
 function saveProject(formData) {
-    // TODO: Guardar proyecto en bd
-    formData.date = Date();
+  // TODO: Guardar proyecto en bd
+  formData.date = Date();
+  let project;
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", `http://localhost:8080/proyecto/Proyectos`, true);
+  xhr.onload = function () {
+    project = JSON.parse(this.responseText);
+    console.log(project);
+  };
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", `http://localhost:8080/proyecto/Proyectos`, true);
-    xhr.onload = function () {
-        project = JSON.parse(this.responseText);
-        console.log(project);
-    };
+  xhr.send(JSON.stringify(formData));
 
-    xhr.send(JSON.stringify(formData));
-
-  let id;
-
-  return id;
+  return project?.id;
 }
 
 function paintProject(formData) {
@@ -113,7 +111,7 @@ function paintProject(formData) {
   edit.type = "button";
   edit.innerHTML = "Editar";
   edit.dataset.bsToggle = "modal";
-  edit.dataset.bsTarget = "#exampleModal";
+  edit.dataset.bsTarget = "#editModal";
   edit.onclick = `selectProject(${formData.id})`;
 
   const open = document.createElement("a");
@@ -136,6 +134,23 @@ function paintProject(formData) {
   col.appendChild(card);
 
   row.appendChild(col);
+}
+
+function editProject() {
+  const form = document.getElementById("editForm");
+
+  const data = {
+    // TODO: No se que nombre es el de colaboradores dentro del servicio
+    collabs: editCollabs,
+    name: form.elements["name"].value,
+    description: form.elements["description"].value,
+  };
+
+  // TODO: Servicio PUT Proyecto
+  // selected es el que debe tener el proyecto que se va a editar
+
+  // Esto es para que vuelva a pintar todos los proyectos nuevamente
+  getProjects();
 }
 
 function cleanProject() {
@@ -268,15 +283,19 @@ function paintEditCollabs(collab) {
 }
 
 function getCollabs() {
-    // TODO: Servicio para obtener los colaboradores
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", `http://localhost:8080/proyecto/Proyectos?collabs=true`, true);
-    xhr.onload = function () {
-        collabs = JSON.parse(this.responseText);
-        console.log(collabs);
-    };
+  // TODO: Servicio para obtener los colaboradores
+  var xhr = new XMLHttpRequest();
+  xhr.open(
+    "GET",
+    `http://localhost:8080/proyecto/Proyectos?collabs=true`,
+    true
+  );
+  xhr.onload = function () {
+    collabs = JSON.parse(this.responseText);
+    console.log(collabs);
+  };
 
-    xhr.send();
+  xhr.send();
   setCollabs();
 }
 
@@ -327,33 +346,36 @@ function getProjects() {
   };
 
   xhr.send();
+  const row = document.getElementById("projects-row");
+  row.innerHTML = "";
+  projects.forEach(paintProject);
 }
 
 function deleteProject(id) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("DELETE", `http://localhost:8080/proyecto/Proyectos?id=${id}`, true);
-    xhr.onload = function () {
-        response = JSON.parse(this.responseText);
-        console.log(response);
-    };
+  var xhr = new XMLHttpRequest();
+  xhr.open("DELETE", `http://localhost:8080/proyecto/Proyectos?id=${id}`, true);
+  xhr.onload = function () {
+    response = JSON.parse(this.responseText);
+    console.log(response);
+  };
 
-    xhr.send();
+  xhr.send();
+  getProjects();
 }
 
 function selectProject(id) {
   cleanProject();
   setCollabs();
 
-    // TODO: Elegir el projecto dependiendo el indice
-    id = 1;
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", `http://localhost:8080/proyecto/Proyectos?id=${id}`, true);
-    xhr.onload = function () {
-        project = JSON.parse(this.responseText);
-        console.log(project);
-    };
+  // TODO: Servicio GET Projects
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", `http://localhost:8080/proyecto/Proyectos?id=${id}`, true);
+  xhr.onload = function () {
+    selected = JSON.parse(this.responseText);
+    console.log(project);
+  };
 
-    xhr.send();
+  xhr.send();
   // selected = proyectos[id]
   //  selected = {
   //   id: 0,
@@ -363,12 +385,11 @@ function selectProject(id) {
   //   collabs: [{ name: "Pepe", uid: 0 }],
   // };
 
-  // const edit = document.getElementById("editForm");
-  // edit.elements["name"].value = selected.name;
-  // edit.elements["description"].value = selected.description;
+  const edit = document.getElementById("editForm");
+  edit.elements["name"].value = selected.name;
+  edit.elements["description"].value = selected.description;
 
-  // selected.collabs.forEach(paintEditCollabs);
-  // console.log(selected);
+  selected.collabs.forEach(paintEditCollabs);
 }
 
 getProjects();

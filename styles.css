@@ -46,3 +46,7 @@ main {
 .width-50 {
   max-width: 50%;
 }
+
+.delete-button {
+  float: right;
+}

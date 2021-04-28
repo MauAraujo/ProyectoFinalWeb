@@ -1,6 +1,7 @@
 let responsabilites = [];
 let colaborations = [];
 let superclases = ["Auto", "Humano"];
+let tarjetas = [];
 
 function createCRC() {
   const form = document.getElementById("crcForm");
@@ -17,7 +18,7 @@ function createCRC() {
 }
 
 function paintCRC(data) {
-  const stories = document.getElementById("crcs");
+  const crcs = document.getElementById("crcs");
   const col = document.createElement("div");
   col.classList.add("col-2", "me-4", "my-2");
 
@@ -35,13 +36,24 @@ function paintCRC(data) {
   subtitle.classList.add("text-start");
   subtitle.innerHTML = data.superclass || "";
 
+  const pHtml = document.createElement("p");
+  pHtml.classList.add("mt-5");
+
+  const deleteButtonHtml = document.createElement("button");
+  deleteButtonHtml.type = "button";
+  deleteButtonHtml.classList.add("btn", "btn-outline-danger", "delete-button");
+  deleteButtonHtml.innerHTML = "Borrar";
+
+  pHtml.appendChild(deleteButtonHtml);
+
   body.appendChild(title);
   body.appendChild(subtitle);
+  body.appendChild(pHtml);
 
   card.appendChild(body);
 
   col.appendChild(card);
-  stories.appendChild(col);
+  crcs.appendChild(col);
 }
 
 function clean() {
@@ -89,17 +101,27 @@ function changeCollaboration(input, index) {
   colaborations[index] = input.value;
 }
 
-function saveCRC() {
-  // TODO: Guardar CRC
+function saveCRC(data) {
+  // TODO: Servicio POST CRC
 }
 
 function getCRC() {
   superclases = [];
+  tarjetas = [];
   // TODO: Servicio GET de CRC
   // ...
+  // tarjetas = ...
   // TODO: Borrar esto y cambiar por el servicio
   superclases = ["Auto", "Humano"];
   paintSuperclass();
+
+  const crcsHtml = document.getElementById("crcs");
+  crcsHtml.innerHTML = "";
+  tarjetas.forEach(paintCRC);
+}
+
+function deleteCRC(id) {
+  // TODO: Servicio DELETE CRC
 }
 
 function paintSuperclass() {
