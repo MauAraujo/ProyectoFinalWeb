@@ -16,13 +16,14 @@ public class Historias extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
 
-        String type, json;
+        String type, json, id;
+        id = request.getParameter("id");
         type = request.getParameter("type");
 
         if (type.equals("story")) {
-            json = getStories();
+            json = getStories(Integer.parseInt(id));
         } else {
-            json = getCRCs();
+            json = getCRCs(Integer.parseInt(id));
         }
 
         PrintWriter out = response.getWriter();
@@ -100,9 +101,9 @@ public class Historias extends HttpServlet {
 
     }
 
-    public String getStories() {
+    public String getStories(int id) {
         StoryDAO dao = new StoryDAO();
-        return dao.getStories();
+        return dao.getStories(id);
     }
 
     public String createStory(Story story) {
@@ -115,9 +116,9 @@ public class Historias extends HttpServlet {
         return dao.deleteStory(id);
     }
 
-    public String getCRCs() {
+    public String getCRCs(int id) {
         CRCDAO dao = new CRCDAO();
-        return dao.getCRCs();
+        return dao.getCRCs(id);
     }
 
     public String createCRC(CRC crc) {

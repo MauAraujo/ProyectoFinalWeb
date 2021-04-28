@@ -133,7 +133,7 @@ function getStories() {
   // historias =
 
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "http://localhost:8080/proyecto/Historias?type=story", true);
+  xhr.open("GET", `http://localhost:8080/proyecto/Historias?id=${projectID}&type=story`, true);
   xhr.onload = function () {
     historias = JSON.parse(this.responseText);
     console.log(historias);

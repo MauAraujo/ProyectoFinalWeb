@@ -9,21 +9,20 @@ import projects.Story;
 public class StoryDAO {
   String result;
 
-  public String getStories() {
+  public String getStories(int projectid) {
     Gson gson = new Gson();
     String title, description, date, observations;
     ArrayList < Story > stories = new ArrayList < Story > ();
-    int id, projectid, value, days;
+    int id, value, days;
 
     try {
       Class.forName("com.mysql.jdbc.Driver");
       Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
       Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-      ResultSet rs = stmt.executeQuery("SELECT * FROM `user-stories`");
+      ResultSet rs = stmt.executeQuery("SELECT * FROM `user-stories` WHERE projectid = " + projectid);
 
       while (rs.next()) {
         id = rs.getInt("id");
-        projectid = rs.getInt("projectid");
         title = rs.getString("title");
         description = rs.getString("description");
         date = rs.getString("date");

@@ -9,23 +9,22 @@ import projects.CRC;
 public class CRCDAO {
   String result;
 
-  public String getCRCs() {
+  public String getCRCs(int projectid) {
     Gson gson = new Gson();
     String name, superclass, responsibility, collaboration;
     ArrayList < CRC > crcs = new ArrayList < CRC > ();
     ArrayList < String > responsibilities = new ArrayList < String > ();
     ArrayList < String > collaborations = new ArrayList < String > ();
-    int id, projectid;
+    int id;
 
     try {
       Class.forName("com.mysql.jdbc.Driver");
       Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agileplanning", "root", "");
       Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-      ResultSet rs = stmt.executeQuery("SELECT * FROM `crc`");
+      ResultSet rs = stmt.executeQuery("SELECT * FROM `crc` WHERE projectid = " + projectid);
 
       while (rs.next()) {
         id = rs.getInt("id");
-        projectid = rs.getInt("projectid");
         name = rs.getString("class");
         superclass = rs.getString("superclass");
         crcs.add(new CRC(id, projectid, name, superclass));

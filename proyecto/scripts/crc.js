@@ -153,7 +153,7 @@ function getCRC() {
   tarjetas = [];
 
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "http://localhost:8080/proyecto/Historias?type=crc", true);
+  xhr.open("GET", `http://localhost:8080/proyecto/Historias?id=${projectID}&type=crc`, true);
   xhr.onload = function () {
     tarjetas = JSON.parse(this.responseText);
     console.log(tarjetas);

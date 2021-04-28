@@ -2,10 +2,10 @@
 -- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 28, 2021 at 07:09 PM
+-- Host: localhost
+-- Generation Time: Apr 28, 2021 at 07:33 PM
 -- Server version: 10.4.18-MariaDB
--- PHP Version: 7.3.27
+-- PHP Version: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,11 +38,8 @@ CREATE TABLE `collaborator-projects` (
 --
 
 INSERT INTO `collaborator-projects` (`id`, `uid`, `projectid`) VALUES
-(20, 1, 6),
-(21, 2, 6),
-(31, 3, 9),
-(32, 4, 9),
-(33, 1, 9);
+(1, 1, 1),
+(2, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -81,13 +78,6 @@ CREATE TABLE `crc` (
   `superclass` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `crc`
---
-
-INSERT INTO `crc` (`id`, `projectid`, `class`, `superclass`) VALUES
-(4, 8, 'Usuario', '');
-
 -- --------------------------------------------------------
 
 --
@@ -112,13 +102,6 @@ CREATE TABLE `crc-responsibilities` (
   `responsibility` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `crc-responsibilities`
---
-
-INSERT INTO `crc-responsibilities` (`id`, `crc`, `responsibility`) VALUES
-(4, 4, 'Iniciar sesión');
-
 -- --------------------------------------------------------
 
 --
@@ -137,8 +120,7 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`name`, `description`, `date`, `id`) VALUES
-('Citrus', 'Aplicación móvil para el apoyo al aprendizaje.', 'Wed Apr 28 2021 11:33:15 GMT-0500 (Central Daylight Time)', 6),
-('Adopción de Mascotas', 'Página web para el apoyo a la adopción de mascotas', 'Wed Apr 28 2021 11:45:19 GMT-0500 (Central Daylight Time)', 9);
+('Citrus', 'Aplicación móvil para el apoyo al aprendizaje.', 'Wed Apr 28 2021 12:31:56 GMT-0500 (Central Daylight Time)', 1);
 
 -- --------------------------------------------------------
 
@@ -156,13 +138,6 @@ CREATE TABLE `user-stories` (
   `observations` text NOT NULL,
   `days` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `user-stories`
---
-
-INSERT INTO `user-stories` (`id`, `projectid`, `title`, `description`, `date`, `value`, `observations`, `days`) VALUES
-(3, 8, 'Crear vista principal', 'Implementar el diseño aprobado en la aplicación.', '2021-04-28', 10, 'Sin observaciones', 5);
 
 --
 -- Indexes for dumped tables
@@ -218,7 +193,7 @@ ALTER TABLE `user-stories`
 -- AUTO_INCREMENT for table `collaborator-projects`
 --
 ALTER TABLE `collaborator-projects`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `collaborators`
@@ -230,31 +205,31 @@ ALTER TABLE `collaborators`
 -- AUTO_INCREMENT for table `crc`
 --
 ALTER TABLE `crc`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `crc-collaborations`
 --
 ALTER TABLE `crc-collaborations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `crc-responsibilities`
 --
 ALTER TABLE `crc-responsibilities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user-stories`
 --
 ALTER TABLE `user-stories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
