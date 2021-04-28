@@ -126,6 +126,11 @@ function deleteCRC(id) {
   // TODO: Servicio DELETE CRC
 }
 
+function getSuperclasses() {
+  superclases = tarjetas.map((e) => e.name);
+  paintSuperclass();
+}
+
 function paintSuperclass() {
   const superclassSelectHtml = document.getElementById("superClassSelect");
   superclassSelectHtml.innerHTML = "";
@@ -148,3 +153,4 @@ function paintSuperclass() {
 
 getProjectID();
 getCRC();
+getSuperclasses();

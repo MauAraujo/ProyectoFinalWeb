@@ -14,12 +14,10 @@ function createStorie() {
     id: form.elements["storieId"].value,
     description: form.elements["description"].value,
     date: form.elements["date"].value,
-    score: form.elements["score"].value,
+    value: form.elements["score"].value,
     observations: form.elements["observations"].value,
-    time: form.elements["time"].value,
-    timeSelect:
-      document.querySelector('input[name="timeSelect"]:checked').value ||
-      "days",
+    days: form.elements["time"].value,
+    timeSelect: "days",
   };
 
   paintStory(data);
@@ -50,11 +48,11 @@ function paintStory(data) {
 
   const storieId = document.createElement("p");
   storieId.classList.add("storie-id", "text-center", "my-5");
-  storieId.innerText = data.score || "Sin valor";
+  storieId.innerText = data.value || "Sin valor";
 
   const days = document.createElement("p");
   days.classList.add("fs-3", "text-center");
-  days.innerText = `${data.time} ${
+  days.innerText = `${data.days} ${
     data.timeSelect === "days" ? "Días" : "Semanas"
   }`;
 
