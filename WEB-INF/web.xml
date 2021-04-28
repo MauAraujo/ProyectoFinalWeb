@@ -23,6 +23,16 @@
   version="3.0"
   metadata-complete="true">
 
+
+    <servlet>
+      <servlet-name>Auth</servlet-name>
+      <servlet-class>auth.Auth</servlet-class>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>Auth</servlet-name>
+      <url-pattern>/Login</url-pattern>
+   </servlet-mapping>
+
     <servlet>
       <servlet-name>Proyectos</servlet-name>
       <servlet-class>projects.Proyectos</servlet-class>
@@ -42,10 +52,10 @@
    </servlet-mapping>
  
     <welcome-file-list>
-        <welcome-file>proyectos.html</welcome-file>
-        <welcome-file>proyectos.xhtml</welcome-file>
-        <welcome-file>proyectos.htm</welcome-file>
-        <welcome-file>proyectos.jsp</welcome-file>
+        <welcome-file>pages/login.html</welcome-file>
+        <welcome-file>pages/login.xhtml</welcome-file>
+        <welcome-file>pages/login.htm</welcome-file>
+        <welcome-file>pages/login.jsp</welcome-file>
     </welcome-file-list>
 
  
