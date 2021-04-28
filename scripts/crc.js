@@ -91,6 +91,15 @@ function clean() {
   responsibilities = [];
   collaborations = [];
   getCRC();
+
+  const form = document.getElementById("crcForm");
+
+  form.elements["name"].value = "";
+  document.getElementById("superClassSelect").value = "";
+  const responsHtml = document.getElementById("responsibilities");
+  responsHtml.innerHTML = "";
+  const collabHtml = document.getElementById("collaborations");
+  collabHtml.innerHTML = "";
 }
 
 function addResponsability() {
@@ -100,12 +109,7 @@ function addResponsability() {
   const inputHtml = document.createElement("input");
   inputHtml.type = "text";
   inputHtml.classList.add("form-control", "my-3");
-  inputHtml.setAttribute(
-    "onchange",
-    `changeResponsability(this,${
-      responsibilities.length > 0 ? responsibilities.length - 1 : 0
-    })`
-  );
+  inputHtml.setAttribute("onchange", `changeResponsability(this,${0})`);
 
   responsHtml.appendChild(inputHtml);
 }
