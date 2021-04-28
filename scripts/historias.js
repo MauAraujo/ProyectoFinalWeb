@@ -22,6 +22,8 @@ function createStorie() {
 
   paintStory(data);
 
+  cleanStoryForm();
+
   // TODO: Guardar en la base de datos
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "http://localhost:8080/proyecto/Historias?type=story", true);
@@ -142,6 +144,16 @@ function getStories() {
   xhr.send();
   // Esto va a repintar cada que se incie la app y
   // cada que se borre una historia
+}
+
+function cleanStoryForm() {
+  const form = document.getElementById("storiesForm");
+  form.elements["title"].value = "";
+  form.elements["description"].value = "";
+  form.elements["date"].value = "";
+  form.elements["score"].value = "";
+  form.elements["observations"].value = "";
+  form.elements["time"].value = "";
 }
 
 getProjectID();
