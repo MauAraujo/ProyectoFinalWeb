@@ -58,6 +58,7 @@ function paintStory(data) {
   deleteButtonHtml.type = "button";
   deleteButtonHtml.classList.add("btn", "btn-outline-danger", "delete-button");
   deleteButtonHtml.innerHTML = "Borrar";
+  deleteButtonHtml.onclick = `deleteStory(${data.id})`;
 
   pHtml.appendChild(deleteButtonHtml);
 

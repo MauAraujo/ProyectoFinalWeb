@@ -205,6 +205,7 @@ function addCollab() {
   li.appendChild(avatar);
   collabs.appendChild(li);
 }
+
 function addCollabEdit() {
   const id = document.getElementById("editCollabSelect").value;
 

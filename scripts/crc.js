@@ -43,6 +43,7 @@ function paintCRC(data) {
   deleteButtonHtml.type = "button";
   deleteButtonHtml.classList.add("btn", "btn-outline-danger", "delete-button");
   deleteButtonHtml.innerHTML = "Borrar";
+  deleteButtonHtml.onclick = `deleteCRC(${data.id})`;
 
   pHtml.appendChild(deleteButtonHtml);
 
