@@ -1,4 +1,11 @@
 let historias = [];
+let projectID = "";
+
+function getProjectID() {
+  const urlParams = new URLSearchParams(window.location.search);
+  projectID = urlParams.get("id");
+  console.log(projectID);
+}
 
 function createStorie() {
   const form = document.getElementById("storiesForm");
@@ -58,7 +65,8 @@ function paintStory(data) {
   deleteButtonHtml.type = "button";
   deleteButtonHtml.classList.add("btn", "btn-outline-danger", "delete-button");
   deleteButtonHtml.innerHTML = "Borrar";
-  deleteButtonHtml.onclick = `deleteStory(${data.id})`;
+  deleteButtonHtml.setAttribute("onclick", `deleteStory(${data.id})`);
+  // deleteButtonHtml.onclick = `deleteStory(${data.id})`;
 
   pHtml.appendChild(deleteButtonHtml);
 
@@ -97,4 +105,5 @@ function getStories() {
   historias.forEach(paintStory);
 }
 
+getProjectID();
 getStories();

@@ -20,9 +20,10 @@ function createProject() {
 
   newCollabs = [];
 
-  const projectID = saveProject(formData);
+  saveProject(formData);
 
-  paintProject({ ...formData, id: projectID });
+  // paintProject({ ...formData, id: projectID });
+  getProjects();
   cleanProject();
 }
 
@@ -38,8 +39,6 @@ function saveProject(formData) {
   };
 
   xhr.send(JSON.stringify(formData));
-
-  return project?.id;
 }
 
 function paintProject(formData) {
@@ -104,7 +103,8 @@ function paintProject(formData) {
   del.classList.add("btn", "btn-outline-danger");
   del.type = "button";
   del.innerHTML = "Eliminar";
-  del.onclick = `deleteProject(${formData.id})`;
+  del.setAttribute("onclick", `deleteProject(${formData.id})`);
+  // del.onclick = `deleteProject(${formData.id})`;
 
   const edit = document.createElement("button");
   edit.classList.add("btn", "btn-outline-warning");
@@ -112,7 +112,8 @@ function paintProject(formData) {
   edit.innerHTML = "Editar";
   edit.dataset.bsToggle = "modal";
   edit.dataset.bsTarget = "#editModal";
-  edit.onclick = `selectProject(${formData.id})`;
+  edit.setAttribute("onclick", `selectProject(${formData.id})`);
+  // edit.onclick = `selectProject(${formData.id})`;
 
   const open = document.createElement("a");
   open.classList.add("btn", "btn-outline-primary");
@@ -292,7 +293,7 @@ function getCollabs() {
     true
   );
   xhr.onload = function () {
-    collabs = JSON.parse(this.responseText);
+    collabsList = JSON.parse(this.responseText);
     console.log(collabs);
   };
 
